@@ -12,7 +12,8 @@ part of 'shopping_item.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 ShoppingItem _$ShoppingItemFromJson(Map<String, dynamic> json) {
   return _ShoppingItem.fromJson(json);
@@ -27,8 +28,12 @@ mixin _$ShoppingItem {
   String get category => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
 
+  /// Serializes this ShoppingItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ShoppingItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ShoppingItemCopyWith<ShoppingItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -36,16 +41,18 @@ mixin _$ShoppingItem {
 /// @nodoc
 abstract class $ShoppingItemCopyWith<$Res> {
   factory $ShoppingItemCopyWith(
-          ShoppingItem value, $Res Function(ShoppingItem) then) =
-      _$ShoppingItemCopyWithImpl<$Res, ShoppingItem>;
+    ShoppingItem value,
+    $Res Function(ShoppingItem) then,
+  ) = _$ShoppingItemCopyWithImpl<$Res, ShoppingItem>;
   @useResult
-  $Res call(
-      {int id,
-      String title,
-      String description,
-      String image,
-      String category,
-      double price});
+  $Res call({
+    int id,
+    String title,
+    String description,
+    String image,
+    String category,
+    double price,
+  });
 }
 
 /// @nodoc
@@ -58,6 +65,8 @@ class _$ShoppingItemCopyWithImpl<$Res, $Val extends ShoppingItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ShoppingItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -68,32 +77,35 @@ class _$ShoppingItemCopyWithImpl<$Res, $Val extends ShoppingItem>
     Object? category = null,
     Object? price = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      image: null == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as double,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as int,
+            title: null == title
+                ? _value.title
+                : title // ignore: cast_nullable_to_non_nullable
+                      as String,
+            description: null == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                      as String,
+            image: null == image
+                ? _value.image
+                : image // ignore: cast_nullable_to_non_nullable
+                      as String,
+            category: null == category
+                ? _value.category
+                : category // ignore: cast_nullable_to_non_nullable
+                      as String,
+            price: null == price
+                ? _value.price
+                : price // ignore: cast_nullable_to_non_nullable
+                      as double,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -101,17 +113,19 @@ class _$ShoppingItemCopyWithImpl<$Res, $Val extends ShoppingItem>
 abstract class _$$ShoppingItemImplCopyWith<$Res>
     implements $ShoppingItemCopyWith<$Res> {
   factory _$$ShoppingItemImplCopyWith(
-          _$ShoppingItemImpl value, $Res Function(_$ShoppingItemImpl) then) =
-      __$$ShoppingItemImplCopyWithImpl<$Res>;
+    _$ShoppingItemImpl value,
+    $Res Function(_$ShoppingItemImpl) then,
+  ) = __$$ShoppingItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      String title,
-      String description,
-      String image,
-      String category,
-      double price});
+  $Res call({
+    int id,
+    String title,
+    String description,
+    String image,
+    String category,
+    double price,
+  });
 }
 
 /// @nodoc
@@ -119,9 +133,12 @@ class __$$ShoppingItemImplCopyWithImpl<$Res>
     extends _$ShoppingItemCopyWithImpl<$Res, _$ShoppingItemImpl>
     implements _$$ShoppingItemImplCopyWith<$Res> {
   __$$ShoppingItemImplCopyWithImpl(
-      _$ShoppingItemImpl _value, $Res Function(_$ShoppingItemImpl) _then)
-      : super(_value, _then);
+    _$ShoppingItemImpl _value,
+    $Res Function(_$ShoppingItemImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of ShoppingItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -132,46 +149,48 @@ class __$$ShoppingItemImplCopyWithImpl<$Res>
     Object? category = null,
     Object? price = null,
   }) {
-    return _then(_$ShoppingItemImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      image: null == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
+    return _then(
+      _$ShoppingItemImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as int,
+        title: null == title
+            ? _value.title
+            : title // ignore: cast_nullable_to_non_nullable
+                  as String,
+        description: null == description
+            ? _value.description
+            : description // ignore: cast_nullable_to_non_nullable
+                  as String,
+        image: null == image
+            ? _value.image
+            : image // ignore: cast_nullable_to_non_nullable
+                  as String,
+        category: null == category
+            ? _value.category
+            : category // ignore: cast_nullable_to_non_nullable
+                  as String,
+        price: null == price
+            ? _value.price
+            : price // ignore: cast_nullable_to_non_nullable
+                  as double,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ShoppingItemImpl extends _ShoppingItem {
-  const _$ShoppingItemImpl(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.image,
-      required this.category,
-      required this.price})
-      : super._();
+  const _$ShoppingItemImpl({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.image,
+    required this.category,
+    required this.price,
+  }) : super._();
 
   factory _$ShoppingItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$ShoppingItemImplFromJson(json);
@@ -209,12 +228,14 @@ class _$ShoppingItemImpl extends _ShoppingItem {
             (identical(other.price, price) || other.price == price));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, title, description, image, category, price);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ShoppingItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ShoppingItemImplCopyWith<_$ShoppingItemImpl> get copyWith =>
@@ -222,20 +243,19 @@ class _$ShoppingItemImpl extends _ShoppingItem {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ShoppingItemImplToJson(
-      this,
-    );
+    return _$$ShoppingItemImplToJson(this);
   }
 }
 
 abstract class _ShoppingItem extends ShoppingItem {
-  const factory _ShoppingItem(
-      {required final int id,
-      required final String title,
-      required final String description,
-      required final String image,
-      required final String category,
-      required final double price}) = _$ShoppingItemImpl;
+  const factory _ShoppingItem({
+    required final int id,
+    required final String title,
+    required final String description,
+    required final String image,
+    required final String category,
+    required final double price,
+  }) = _$ShoppingItemImpl;
   const _ShoppingItem._() : super._();
 
   factory _ShoppingItem.fromJson(Map<String, dynamic> json) =
@@ -253,8 +273,11 @@ abstract class _ShoppingItem extends ShoppingItem {
   String get category;
   @override
   double get price;
+
+  /// Create a copy of ShoppingItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ShoppingItemImplCopyWith<_$ShoppingItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

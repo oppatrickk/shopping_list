@@ -1,3 +1,5 @@
+import 'package:shopping_list/core/enums/custom_icon_data.dart';
+
 enum ShoppingCategory {
   all,
   produce,
@@ -23,20 +25,37 @@ enum ShoppingCategory {
     }
   }
 
-  String get icon {
+  CustomIconData get icon {
     switch (this) {
       case all:
-        return 'assets/icons/all.svg';
+        return CustomIconData.allStroke;
       case produce:
-        return 'assets/icons/produce.svg';
+        return CustomIconData.produceStroke;
       case meat:
-        return 'assets/icons/meat.svg';
+        return CustomIconData.meatStroke;
       case dairy:
-        return 'assets/icons/dairy.svg';
+        return CustomIconData.dairyStroke;
       case pantry:
-        return 'assets/icons/pantry.svg';
+        return CustomIconData.pantryStroke;
       case others:
-        return 'assets/icons/others.svg';
+        return CustomIconData.allStroke;
+    }
+  }
+
+  CustomIconData get activeIcon {
+    switch (this) {
+      case all:
+        return CustomIconData.all;
+      case produce:
+        return CustomIconData.produce;
+      case meat:
+        return CustomIconData.meat;
+      case dairy:
+        return CustomIconData.dairy;
+      case pantry:
+        return CustomIconData.pantry;
+      case others:
+        return CustomIconData.all;
     }
   }
 

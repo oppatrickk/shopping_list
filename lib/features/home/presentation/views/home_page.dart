@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping_list/core/enums/shopping_category.dart';
+import 'package:shopping_list/core/ui/background.dart';
+import 'package:shopping_list/core/ui/custom_divider.dart';
 import 'package:shopping_list/core/utils/asset_constants.dart';
-import 'package:shopping_list/core/utils/extensions.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
+import 'package:shopping_list/features/home/presentation/blocs/home_shopping_category_cubit.dart';
+import 'package:shopping_list/features/home/presentation/widgets/home_search_bar.dart';
+import 'package:shopping_list/features/home/presentation/widgets/home_shopping_category_button.dart';
+import 'package:shopping_list/features/home/presentation/widgets/home_sliver_app_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,143 +20,66 @@ class HomePage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          const Positioned.fill(
-            child: Image(
-              image: AssetImage(Assets.homeBackground1),
-              fit: BoxFit.fill,
-            ),
-          ),
+          const Background(image: Assets.homeBackground1),
 
           SafeArea(
             child: NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                    pinned: true,
-                    leading: const SizedBox.shrink(),
-                    automaticallyImplyLeading: false,
-                    centerTitle: true,
-                    elevation: 0.0,
-                    leadingWidth: 0.0,
-                    toolbarHeight: 54,
-                    scrolledUnderElevation: 0.0,
-                    backgroundColor: Colors.transparent,
-                    expandedHeight: 72,
-                    flexibleSpace: FlexibleSpaceBar(
-                      title: Text(
-                        'Shopping List',
-                        style: context.textTheme.headlineSmall.semibold?.copyWith(
-                          color: context.colorScheme.surface,
+              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) => [
+                HomeSliverAppBar(innerBoxIsScrolled: innerBoxIsScrolled),
+                const HomeSearchBar(),
+              ],
+              body: BlocBuilder<HomeShoppingCategoryCubit, ShoppingCategory?>(
+                builder: (context, category) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 54.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
                       ),
-                      titlePadding: const EdgeInsets.only(bottom: 12.0),
-                      centerTitle: true,
-                    ),
-                    actions: [
-                      AnimatedOpacity(
-                        opacity: innerBoxIsScrolled ? 1.0 : 0.0,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.search,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                  ),
-                  SliverAppBar(
-                    floating: true,
-                    snap: true,
-                    leading: const SizedBox.shrink(),
-                    automaticallyImplyLeading: false,
-                    centerTitle: false,
-                    elevation: 0.0,
-                    leadingWidth: 0.0,
-                    toolbarHeight: 48,
-                    titleSpacing: 0,
-                    scrolledUnderElevation: 0.0,
-                    backgroundColor: Colors.transparent,
-                    flexibleSpace: FlexibleSpaceBar(
-                      titlePadding: EdgeInsets.zero,
-                      title: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Container(
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: context.colorScheme.onSurface.withAlpha(164),
-                            borderRadius: BorderRadius.circular(64),
-                            border: Border.all(
-                              color: context.colorScheme.surface,
-                              width: 0.5,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: screenWidth(context),
+                            height: 110,
+                            child: ListView.separated(
+                              padding: const EdgeInsets.only(top: 16),
+                              separatorBuilder: (context, index) => horizontalSpace(0),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: ShoppingCategory.values.length,
+                              itemBuilder: (context, index) {
+                                if (index == ShoppingCategory.values.length - 1) {
+                                  return const SizedBox.shrink();
+                                }
+
+                                return HomeShoppingCategoryButton(
+                                  onTap: () => context.read<HomeShoppingCategoryCubit>().setActiveCategory(ShoppingCategory.values[index]),
+                                  index: index,
+                                  active: category == ShoppingCategory.values[index],
+                                );
+                              },
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Row(
+                          const CustomDivider(),
+                          Flexible(
+                            child: ListView(
                               children: [
-                                const Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Search for a product...',
-                                  style: context.textTheme.bodyMedium.normal?.copyWith(
-                                    color: context.colorScheme.surface,
-                                  ),
-                                ),
+                                Text(category?.title ?? 'All'),
+                                SizedBox(height: MediaQuery.of(context).size.height * 0.5),
+                                const Text('lol'),
+                                SizedBox(height: MediaQuery.of(context).size.height),
+                                const Text('lol'),
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                      centerTitle: true,
-                    ),
-                  ),
-                ];
-              },
-              body: Padding(
-                padding: const EdgeInsets.only(top: 54.0),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  padding: const EdgeInsets.only(left: 16.0, top: 16, right: 16),
-                  child: Column(
-                    children: [
-                      const Row(
-                        children: [
-                          Text('All'),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      Container(
-                        height: 1,
-                        width: screenWidth(context),
-                        decoration: const BoxDecoration(color: Colors.black12),
-                      ),
-                      const SizedBox(height: 16),
-                      Flexible(
-                        child: ListView(
-                          children: [
-                            const Text('lol'),
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.5),
-                            const Text('lol'),
-                            SizedBox(height: MediaQuery.of(context).size.height),
-                            const Text('lol'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ),

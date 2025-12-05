@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping_list/features/home/presentation/blocs/home_shopping_category_cubit.dart';
 import 'package:shopping_list/features/home/presentation/views/home_page.dart';
 
 class AppWidget extends StatelessWidget {
@@ -6,16 +8,21 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2b6a46)),
-        useMaterial3: true,
-        brightness: Brightness.light,
-        fontFamily: 'Poppins',
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => HomeShoppingCategoryCubit()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2b6a46)),
+          useMaterial3: true,
+          brightness: Brightness.light,
+          fontFamily: 'Poppins',
+        ),
+        themeMode: ThemeMode.light,
+        home: const HomePage(),
       ),
-      themeMode: ThemeMode.light,
-      home: const HomePage(),
     );
   }
 }
