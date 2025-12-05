@@ -9,10 +9,12 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF2b6a46)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2b6a46)),
         useMaterial3: true,
         brightness: Brightness.light,
+        fontFamily: 'Poppins',
       ),
+      themeMode: ThemeMode.light,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
