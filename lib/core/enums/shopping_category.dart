@@ -28,23 +28,6 @@ enum ShoppingCategory {
   CustomIconData get icon {
     switch (this) {
       case all:
-        return CustomIconData.allStroke;
-      case produce:
-        return CustomIconData.produceStroke;
-      case meat:
-        return CustomIconData.meatStroke;
-      case dairy:
-        return CustomIconData.dairyStroke;
-      case pantry:
-        return CustomIconData.pantryStroke;
-      case others:
-        return CustomIconData.allStroke;
-    }
-  }
-
-  CustomIconData get activeIcon {
-    switch (this) {
-      case all:
         return CustomIconData.all;
       case produce:
         return CustomIconData.produce;

@@ -29,7 +29,7 @@ class HomeShoppingCategoryButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomIcon(
-                icon: ShoppingCategory.values[index].activeIcon,
+                icon: ShoppingCategory.values[index].icon,
                 size: 48,
                 height: 48,
                 color: active ? context.colorScheme.error : context.colorScheme.onSurfaceVariant,
