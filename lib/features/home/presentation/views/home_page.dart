@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list/core/utils/asset_constants.dart';
 import 'package:shopping_list/core/utils/extensions.dart';
+import 'package:shopping_list/core/utils/ui_helpers.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -120,14 +121,32 @@ class HomePage extends StatelessWidget {
                       topRight: Radius.circular(20),
                     ),
                   ),
-                  child: ListView(
-                    padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.only(left: 16.0, top: 16, right: 16),
+                  child: Column(
                     children: [
-                      const Text('lol'),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.5),
-                      const Text('lol'),
-                      SizedBox(height: MediaQuery.of(context).size.height),
-                      const Text('lol'),
+                      const Row(
+                        children: [
+                          Text('All'),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        height: 1,
+                        width: screenWidth(context),
+                        decoration: const BoxDecoration(color: Colors.black12),
+                      ),
+                      const SizedBox(height: 16),
+                      Flexible(
+                        child: ListView(
+                          children: [
+                            const Text('lol'),
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.5),
+                            const Text('lol'),
+                            SizedBox(height: MediaQuery.of(context).size.height),
+                            const Text('lol'),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),

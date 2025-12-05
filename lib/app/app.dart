@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_list/features/home/home_page.dart';
+import 'package:shopping_list/features/home/presentation/views/home_page.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
