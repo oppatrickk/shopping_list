@@ -15,7 +15,7 @@ class AppWidget extends StatelessWidget {
         fontFamily: 'Poppins',
       ),
       themeMode: ThemeMode.light,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomePage(),
     );
   }
 }
