@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list/core/enums/custom_icon_data.dart';
 import 'package:shopping_list/core/enums/shopping_category.dart';
+import 'package:shopping_list/core/services/sound_service.dart';
 import 'package:shopping_list/core/ui/custom_icon.dart';
+import 'package:shopping_list/core/utils/asset_constants.dart';
 import 'package:shopping_list/core/utils/extensions.dart';
 import 'package:shopping_list/core/utils/string_extension.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
@@ -10,6 +12,7 @@ import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_item.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
 import 'package:shopping_list/features/home/presentation/views/home_view_item_sheet.dart';
+import 'package:shopping_list/injection.dart';
 
 class HomeShoppingItemListAll extends StatelessWidget {
   const HomeShoppingItemListAll({
@@ -103,15 +106,19 @@ class HomeShoppingItemListAll extends StatelessWidget {
                             }
 
                             return InkWell(
-                              onTap: () async => await showModalBottomSheet(
-                                isScrollControlled: true,
-                                useSafeArea: true,
-                                context: context,
-                                builder: (context) => HomeViewItemSheet(
-                                  item: item,
-                                  initialQuantity: initialQuantity,
-                                ),
-                              ),
+                              onTap: () async {
+                                await getIt<SoundService>().playAsset(Assets.click1);
+                                if (!context.mounted) return;
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  useSafeArea: true,
+                                  context: context,
+                                  builder: (context) => HomeViewItemSheet(
+                                    item: item,
+                                    initialQuantity: initialQuantity,
+                                  ),
+                                );
+                              },
                               child: Container(
                                 key: ValueKey(isAdded),
                                 width: itemWidth,
@@ -174,8 +181,13 @@ class HomeShoppingItemListAll extends StatelessWidget {
                                             top: 0,
                                             right: 0,
                                             child: InkWell(
-                                              onTap: () =>
-                                                  context.read<HomeShoppingCartCubit>().removeItem(cart.firstWhere((e) => e.item.id == item.id)),
+                                              onTap: () async {
+                                                if (!context.mounted) return;
+                                                await getIt<SoundService>().playAsset(Assets.remove);
+
+                                                if (!context.mounted) return;
+                                                context.read<HomeShoppingCartCubit>().removeItem(cart.firstWhere((e) => e.item.id == item.id));
+                                              },
                                               child: Container(
                                                 padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
                                                 decoration: BoxDecoration(

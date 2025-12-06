@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list/core/enums/custom_icon_data.dart';
+import 'package:shopping_list/core/services/sound_service.dart';
 import 'package:shopping_list/core/ui/custom_icon.dart';
+import 'package:shopping_list/core/utils/asset_constants.dart';
 import 'package:shopping_list/core/utils/extensions.dart';
 import 'package:shopping_list/core/utils/string_extension.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_item.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
+import 'package:shopping_list/injection.dart';
 
 class HomeViewItemSheet extends StatefulWidget {
   const HomeViewItemSheet({
@@ -171,7 +174,8 @@ class _HomeViewItemSheetState extends State<HomeViewItemSheet> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
+                          await getIt<SoundService>().playAsset(Assets.click2);
                           if (quantity > 0) setState(() => quantity--);
                         },
                         child: Container(
@@ -208,7 +212,8 @@ class _HomeViewItemSheetState extends State<HomeViewItemSheet> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
+                          await getIt<SoundService>().playAsset(Assets.click2);
                           if (quantity < 100) setState(() => quantity++);
                         },
                         child: Container(
@@ -236,18 +241,26 @@ class _HomeViewItemSheetState extends State<HomeViewItemSheet> {
                 ),
                 FilledButton(
                   style: FilledButton.styleFrom(
-                    backgroundColor: quantity == 0 && widget.initialQuantity != null ? context.colorScheme.error : context.colorScheme.primary,
+                    backgroundColor: quantity == 0 && widget.initialQuantity != null
+                        ? context.colorScheme.error
+                        : widget.initialQuantity == null && quantity == 0
+                        ? context.colorScheme.outline
+                        : context.colorScheme.primary,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (quantity == 0) {
                       if (widget.initialQuantity != null) {
+                        await getIt<SoundService>().playAsset(Assets.remove);
+
+                        if (!context.mounted) return;
                         context.read<HomeShoppingCartCubit>().removeItem(ShoppingCart(item: widget.item, quantity: widget.initialQuantity!));
                         Navigator.pop(context, false);
-                      } else {
-                        Navigator.pop(context);
-                      }
+                      } else {}
                     } else {
                       if (quantity > 0) {
+                        await getIt<SoundService>().playAsset(Assets.beep);
+
+                        if (!context.mounted) return;
                         if (widget.initialQuantity != null) {
                           context.read<HomeShoppingCartCubit>().updateItem(ShoppingCart(item: widget.item, quantity: quantity));
                         } else {

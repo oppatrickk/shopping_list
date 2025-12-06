@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list/core/enums/custom_icon_data.dart';
+import 'package:shopping_list/core/services/sound_service.dart';
 import 'package:shopping_list/core/ui/custom_icon.dart';
+import 'package:shopping_list/core/utils/asset_constants.dart';
 import 'package:shopping_list/core/utils/extensions.dart';
 import 'package:shopping_list/core/utils/string_extension.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
@@ -9,6 +11,7 @@ import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_item.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
 import 'package:shopping_list/features/home/presentation/views/home_view_item_sheet.dart';
+import 'package:shopping_list/injection.dart';
 
 class ShoppingItemSearchDelegate extends SearchDelegate<ShoppingItem?> {
   ShoppingItemSearchDelegate({required this.items});
@@ -155,6 +158,7 @@ class ShoppingItemSearchDelegate extends SearchDelegate<ShoppingItem?> {
                     initialQuantity = cart.firstWhere((e) => e.item.id == item.id).quantity;
                   }
 
+                  await getIt<SoundService>().playAsset(Assets.click1);
                   if (!context.mounted) return;
 
                   final result = await showModalBottomSheet(

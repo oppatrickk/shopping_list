@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list/core/enums/custom_icon_data.dart';
+import 'package:shopping_list/core/services/sound_service.dart';
 import 'package:shopping_list/core/ui/custom_icon.dart';
 import 'package:shopping_list/core/ui/custom_scrollbar.dart';
+import 'package:shopping_list/core/utils/asset_constants.dart';
 import 'package:shopping_list/core/utils/extensions.dart';
 import 'package:shopping_list/core/utils/string_extension.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
@@ -10,6 +12,7 @@ import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_remove_shopping_item_dialog.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_start_over_dialog.dart';
+import 'package:shopping_list/injection.dart';
 
 class HomeViewCartSheet extends StatelessWidget {
   const HomeViewCartSheet({
@@ -149,6 +152,8 @@ class HomeViewCartSheet extends StatelessWidget {
                                     children: [
                                       InkWell(
                                         onTap: () async {
+                                          await getIt<SoundService>().playAsset(Assets.click2);
+                                          if (!context.mounted) return;
                                           if (cart[index].quantity > 1) {
                                             context.read<HomeShoppingCartCubit>().updateItem(
                                               ShoppingCart(item: cart[index].item, quantity: cart[index].quantity - 1),
@@ -198,7 +203,9 @@ class HomeViewCartSheet extends StatelessWidget {
                                         ),
                                       ),
                                       InkWell(
-                                        onTap: () {
+                                        onTap: () async {
+                                          await getIt<SoundService>().playAsset(Assets.click2);
+                                          if (!context.mounted) return;
                                           if (cart[index].quantity < 100) {
                                             context.read<HomeShoppingCartCubit>().updateItem(
                                               ShoppingCart(item: cart[index].item, quantity: cart[index].quantity + 1),
@@ -321,6 +328,10 @@ class HomeViewCartSheet extends StatelessWidget {
                             if (!context.mounted) return;
 
                             if (result) {
+                              if (!context.mounted) return;
+                              await getIt<SoundService>().playAsset(Assets.remove);
+
+                              if (!context.mounted) return;
                               context.read<HomeShoppingCartCubit>().clearAllItem();
                               Navigator.pop(context);
                             }
@@ -331,7 +342,15 @@ class HomeViewCartSheet extends StatelessWidget {
                           ),
                         ),
                         FilledButton(
-                          onPressed: () async => Navigator.pop(context, true),
+                          onPressed: () async {
+                            if (!context.mounted) return;
+                            await getIt<SoundService>().playAsset(Assets.cashRegister);
+                            await Future.delayed(const Duration(milliseconds: 500), () {});
+
+                            if (!context.mounted) return;
+
+                            Navigator.pop(context, true);
+                          },
                           child: Row(
                             children: [
                               CustomIcon(

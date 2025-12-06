@@ -68,7 +68,9 @@ class HomePage extends StatelessWidget {
                                   }
 
                                   return HomeShoppingCategoryButton(
-                                    onTap: () => context.read<HomeShoppingCategoryCubit>().setActiveCategory(ShoppingCategory.values[index]),
+                                    onTap: () {
+                                      context.read<HomeShoppingCategoryCubit>().setActiveCategory(ShoppingCategory.values[index]);
+                                    },
                                     index: index,
                                     active: category == ShoppingCategory.values[index],
                                   );

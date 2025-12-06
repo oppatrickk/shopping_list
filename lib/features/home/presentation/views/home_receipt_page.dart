@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping_list/core/enums/custom_icon_data.dart';
+import 'package:shopping_list/core/services/sound_service.dart';
 import 'package:shopping_list/core/ui/background.dart';
 import 'package:shopping_list/core/ui/custom_divider.dart';
 import 'package:shopping_list/core/ui/custom_icon.dart';
@@ -14,14 +15,54 @@ import 'package:shopping_list/core/utils/ui_helpers.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
 import 'package:shopping_list/features/home/presentation/views/home_page.dart';
+import 'package:shopping_list/injection.dart';
 
-class HomeReceipt extends StatelessWidget {
+class HomeReceipt extends StatefulWidget {
   const HomeReceipt({
     super.key,
     required this.cart,
   });
 
   final List<ShoppingCart> cart;
+
+  @override
+  State<HomeReceipt> createState() => _HomeReceiptState();
+}
+
+class _HomeReceiptState extends State<HomeReceipt> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Slide animation
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+
+    playSoundWithDelay();
+  }
+
+  void playSoundWithDelay() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    await getIt<SoundService>().playAsset(Assets.receipt);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,180 +78,183 @@ class HomeReceipt extends StatelessWidget {
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(32.0),
-                child: ClipPath(
-                  clipper: ReceiptClipper(),
-                  child: Container(
-                    width: screenWidthFraction(context, offsetBy: 64),
-                    height: screenHeightFraction(context, offsetBy: 64),
-                    decoration: BoxDecoration(color: context.colorScheme.surface),
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32),
-                    child: Column(
-                      children: [
-                        Center(
-                          child: Container(
-                            height: 64,
-                            width: 64,
-                            decoration: BoxDecoration(
-                              color: context.colorScheme.primaryContainer,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CustomIcon(
-                                icon: CustomIconData.shoppingBasketConfirm,
-                                size: 48,
-                                height: 48,
-                                color: context.colorScheme.primary,
+                child: SlideTransition(
+                  position: _slideAnimation,
+                  child: ClipPath(
+                    clipper: ReceiptClipper(),
+                    child: Container(
+                      width: screenWidthFraction(context, offsetBy: 64),
+                      height: screenHeightFraction(context, offsetBy: 64),
+                      decoration: BoxDecoration(color: context.colorScheme.surface),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: Container(
+                              height: 64,
+                              width: 64,
+                              decoration: BoxDecoration(
+                                color: context.colorScheme.primaryContainer,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CustomIcon(
+                                  icon: CustomIconData.shoppingBasketConfirm,
+                                  size: 48,
+                                  height: 48,
+                                  color: context.colorScheme.primary,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        verticalSpace(4),
-                        Center(
-                          child: Text(
-                            'Your Shopping List',
-                            style: context.textTheme.headlineSmall.bold.cColor(context.colorScheme.onSurface),
+                          verticalSpace(4),
+                          Center(
+                            child: Text(
+                              'Your Shopping List',
+                              style: context.textTheme.headlineSmall.bold.cColor(context.colorScheme.onSurface),
+                            ),
                           ),
-                        ),
-                        const CustomDivider(padding: EdgeInsets.symmetric(vertical: 16)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Invoice Number',
-                              style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
-                            ),
-                            Text(
-                              DateTime.now().millisecondsSinceEpoch.toString(),
-                              style: context.textTheme.bodyMedium.normal.cColor(context.colorScheme.onSurface),
-                            ),
-                          ],
-                        ),
-                        verticalSpace(4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Date',
-                              style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
-                            ),
-                            Text(
-                              DateFormat.yMd('en_US').format(DateTime.now()),
-                              style: context.textTheme.bodyMedium.normal.cColor(context.colorScheme.onSurface),
-                            ),
-                          ],
-                        ),
-
-                        const CustomDivider(padding: EdgeInsets.symmetric(vertical: 16)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                          child: Row(
+                          const CustomDivider(padding: EdgeInsets.symmetric(vertical: 16)),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  '#',
-                                  style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
-                                ),
+                              Text(
+                                'Invoice Number',
+                                style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
                               ),
-                              Expanded(
-                                flex: 3,
-                                child: Text(
-                                  'Item',
-                                  style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  'Qty',
-                                  style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
-
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  'Price',
-                                  style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
-                                  textAlign: TextAlign.end,
-                                ),
+                              Text(
+                                DateTime.now().millisecondsSinceEpoch.toString(),
+                                style: context.textTheme.bodyMedium.normal.cColor(context.colorScheme.onSurface),
                               ),
                             ],
                           ),
-                        ),
-                        verticalSpace(8),
+                          verticalSpace(4),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Date',
+                                style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
+                              ),
+                              Text(
+                                DateFormat.yMd('en_US').format(DateTime.now()),
+                                style: context.textTheme.bodyMedium.normal.cColor(context.colorScheme.onSurface),
+                              ),
+                            ],
+                          ),
 
-                        Expanded(
-                          child: CustomScrollbar(
-                            color: context.colorScheme.outline,
-                            thumbVisibility: true,
-                            thickness: 2,
-                            child: ListView.builder(
-                              itemCount: cart.length,
-                              itemBuilder: (context, index) {
-                                final cartItem = cart[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Expanded(flex: 1, child: Text('${index + 1}')),
-                                      Expanded(flex: 3, child: Text(cartItem.item.title)),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          cartItem.quantity.toString(),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          '\$${cartItem.item.price.toStringAsFixed(2)}',
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      ),
-                                    ],
+                          const CustomDivider(padding: EdgeInsets.symmetric(vertical: 16)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    '#',
+                                    style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
                                   ),
-                                );
-                              },
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    'Item',
+                                    style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    'Qty',
+                                    style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
+
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    'Price',
+                                    style: context.textTheme.bodyMedium.semibold.cColor(context.colorScheme.onSurface),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        const CustomDivider(padding: EdgeInsets.symmetric(vertical: 16)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Total',
-                              style: context.textTheme.headlineSmall.bold.cColor(context.colorScheme.onSurface),
+                          verticalSpace(8),
+
+                          Expanded(
+                            child: CustomScrollbar(
+                              color: context.colorScheme.outline,
+                              thumbVisibility: true,
+                              thickness: 2,
+                              child: ListView.builder(
+                                itemCount: widget.cart.length,
+                                itemBuilder: (context, index) {
+                                  final cartItem = widget.cart[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Expanded(flex: 1, child: Text('${index + 1}')),
+                                        Expanded(flex: 3, child: Text(cartItem.item.title)),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            cartItem.quantity.toString(),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            '\$${cartItem.item.price.toStringAsFixed(2)}',
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
-                            Text(
-                              StringExtension.formatMoney(context.read<HomeShoppingCartCubit>().totalPrice),
-                              style: context.textTheme.headlineSmall.bold.cColor(context.colorScheme.error),
-                            ),
-                          ],
-                        ),
-                        verticalSpace(32),
-                        FilledButton(
-                          style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0)),
-                          onPressed: () async {
-                            context.read<HomeShoppingCartCubit>().clearAllItem();
-                            await Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (_) => const HomePage()),
-                              (route) => false,
-                            );
-                          },
-                          child: Text(
-                            'Return to Home',
-                            style: context.textTheme.headlineSmall.medium.cColor(context.colorScheme.onPrimary),
                           ),
-                        ),
-                      ],
+                          const CustomDivider(padding: EdgeInsets.symmetric(vertical: 16)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total',
+                                style: context.textTheme.headlineSmall.bold.cColor(context.colorScheme.onSurface),
+                              ),
+                              Text(
+                                StringExtension.formatMoney(context.read<HomeShoppingCartCubit>().totalPrice),
+                                style: context.textTheme.headlineSmall.bold.cColor(context.colorScheme.error),
+                              ),
+                            ],
+                          ),
+                          verticalSpace(32),
+                          FilledButton(
+                            style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0)),
+                            onPressed: () async {
+                              context.read<HomeShoppingCartCubit>().clearAllItem();
+                              await Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (_) => const HomePage()),
+                                (route) => false,
+                              );
+                            },
+                            child: Text(
+                              'Return to Home',
+                              style: context.textTheme.headlineSmall.medium.cColor(context.colorScheme.onPrimary),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

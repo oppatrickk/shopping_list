@@ -12,6 +12,7 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import 'core/services/sound_service.dart' as _i376;
 import 'features/home/data/datasources/shopping_item_datasource_local.dart'
     as _i258;
 import 'features/home/data/repositories/shopping_item_repository_impl.dart'
@@ -39,6 +40,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i458.HomeShoppingCategoryCubit>(
       () => _i458.HomeShoppingCategoryCubit(),
     );
+    gh.lazySingleton<_i376.SoundService>(() => _i376.SoundService());
     gh.lazySingleton<_i258.ShoppingItemDataSourceLocal>(
       () => const _i258.ShoppingItemDataSourceLocalImpl(),
     );
