@@ -1,4 +1,5 @@
 enum CustomIconData {
+  arrowLeft('assets/icons/arrow-left-02.svg'),
   chevronDown('assets/icons/chevron-down.svg'),
   cancel('assets/icons/cancel-01.svg'),
   remove('assets/icons/remove-01.svg'),

@@ -242,7 +242,7 @@ class _HomeViewItemSheetState extends State<HomeViewItemSheet> {
                     if (quantity == 0) {
                       if (widget.initialQuantity != null) {
                         context.read<HomeShoppingCartCubit>().removeItem(ShoppingCart(item: widget.item, quantity: widget.initialQuantity!));
-                        Navigator.pop(context);
+                        Navigator.pop(context, false);
                       } else {
                         Navigator.pop(context);
                       }
@@ -253,7 +253,7 @@ class _HomeViewItemSheetState extends State<HomeViewItemSheet> {
                         } else {
                           context.read<HomeShoppingCartCubit>().addItem(ShoppingCart(item: widget.item, quantity: quantity));
                         }
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       }
                     }
                   },

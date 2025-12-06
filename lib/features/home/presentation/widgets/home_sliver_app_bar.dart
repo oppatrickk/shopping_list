@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list/core/utils/extensions.dart';
+import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_item.dart';
+import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_item_bloc/home_shopping_item_bloc.dart';
 import 'package:shopping_list/features/home/presentation/views/home_search_item_delegate.dart';
 
@@ -40,27 +42,31 @@ class HomeSliverAppBar extends StatelessWidget {
       actions: [
         BlocBuilder<HomeShoppingItemBloc, HomeShoppingItemState>(
           builder: (context, state) {
-            return AnimatedOpacity(
-              opacity: innerBoxIsScrolled ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-                onPressed: () async {
-                  await state.maybeMap(
-                    loaded: (state) async {
-                      await showSearch<ShoppingItem?>(
-                        context: context,
-                        delegate: ShoppingItemSearchDelegate(items: state.items),
+            return BlocBuilder<HomeShoppingCartCubit, List<ShoppingCart>>(
+              builder: (context, cart) {
+                return AnimatedOpacity(
+                  opacity: innerBoxIsScrolled ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
+                    onPressed: () async {
+                      await state.maybeMap(
+                        loaded: (state) async {
+                          await showSearch<ShoppingItem?>(
+                            context: context,
+                            delegate: ShoppingItemSearchDelegate(items: state.items),
+                          );
+                        },
+                        orElse: () => null,
                       );
                     },
-                    orElse: () => null,
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             );
           },
         ),
