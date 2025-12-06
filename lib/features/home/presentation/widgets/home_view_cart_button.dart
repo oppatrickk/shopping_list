@@ -36,12 +36,14 @@ class ViewCartButton extends StatelessWidget {
                       );
 
                       if (result == null && !context.mounted) return;
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomeReceipt(cart: cart),
-                        ),
-                      );
+                      if (result == true) {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeReceipt(cart: cart),
+                          ),
+                        );
+                      }
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),

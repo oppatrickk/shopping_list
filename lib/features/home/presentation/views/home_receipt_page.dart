@@ -13,6 +13,7 @@ import 'package:shopping_list/core/utils/string_extension.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
+import 'package:shopping_list/features/home/presentation/views/home_page.dart';
 
 class HomeReceipt extends StatelessWidget {
   const HomeReceipt({
@@ -198,7 +199,11 @@ class HomeReceipt extends StatelessWidget {
                           style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0)),
                           onPressed: () async {
                             context.read<HomeShoppingCartCubit>().clearAllItem();
-                            Navigator.pop(context);
+                            await Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (_) => const HomePage()),
+                              (route) => false,
+                            );
                           },
                           child: Text(
                             'Return to Home',
