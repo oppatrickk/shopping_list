@@ -99,101 +99,111 @@ class ShoppingItemSearchDelegate extends SearchDelegate<ShoppingItem?> {
 
         return BlocBuilder<HomeShoppingCartCubit, List<ShoppingCart>>(
           builder: (context, cart) {
-            return ListTile(
-              tileColor: context.colorScheme.surfaceContainer,
-              contentPadding: const EdgeInsets.only(left: 8, right: 16),
-              leading: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      item.image,
-                      height: 54,
-                      width: 54,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  if (cart.any((e) => e.item.id == item.id && e.quantity > 0))
-                    Positioned(
-                      top: 1,
-                      left: 2,
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.onSurface,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          cart.firstWhere((e) => e.item.id == item.id).quantity.toString(),
-                          style: context.textTheme.labelSmall.bold.cColor(context.colorScheme.onPrimary),
-                        ),
+            return Padding(
+              padding: EdgeInsets.only(bottom: index == results.length - 1 ? 64.0 : 0),
+              child: ListTile(
+                tileColor: context.colorScheme.surfaceContainer,
+                contentPadding: const EdgeInsets.only(left: 8, right: 16),
+                leading: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        item.image,
+                        height: 54,
+                        width: 54,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                ],
-              ),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              title: Text(item.title),
-              subtitle: Text(item.description, maxLines: 1, overflow: TextOverflow.ellipsis),
-              trailing: Text(
-                StringExtension.formatMoney(item.price),
-                style: context.textTheme.titleLarge.semibold.cColor(context.colorScheme.error),
-              ),
-              onTap: () async {
-                final isAdded = cart.any((e) => e.item.id == item.id && e.quantity > 0);
-                int? initialQuantity;
-
-                if (isAdded) {
-                  initialQuantity = cart.firstWhere((e) => e.item.id == item.id).quantity;
-                }
-
-                if (!context.mounted) return;
-
-                final result = await showModalBottomSheet(
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  context: context,
-                  builder: (context) => HomeViewItemSheet(
-                    item: item,
-                    initialQuantity: initialQuantity,
-                  ),
-                );
-
-                if (result) {
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: context.colorScheme.primaryContainer,
-                      content: Row(
-                        children: [
-                          CustomIcon(icon: CustomIconData.shoppingBasketConfirm, color: context.colorScheme.onPrimaryContainer),
-                          horizontalSpace(8),
-                          Text(
-                            '${item.title} Added / Updated',
-                            style: context.textTheme.bodyLarge.cColor(context.colorScheme.onPrimaryContainer),
+                    if (cart.any((e) => e.item.id == item.id && e.quantity > 0))
+                      Positioned(
+                        top: 0,
+                        left: 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: context.colorScheme.onSurface,
+                            shape: BoxShape.circle,
                           ),
-                        ],
+                          child: Text(
+                            cart.firstWhere((e) => e.item.id == item.id).quantity.toString(),
+                            style: context.textTheme.labelSmall.bold.cColor(context.colorScheme.onPrimary),
+                          ),
+                        ),
                       ),
+                  ],
+                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                title: Text(
+                  item.title,
+                  style: context.textTheme.bodyLarge.medium.cColor(context.colorScheme.onSurface),
+                ),
+                subtitle: Text(
+                  item.description,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                trailing: Text(
+                  StringExtension.formatMoney(item.price),
+                  style: context.textTheme.titleMedium.semibold.cColor(context.colorScheme.error),
+                ),
+                onTap: () async {
+                  final isAdded = cart.any((e) => e.item.id == item.id && e.quantity > 0);
+                  int? initialQuantity;
+
+                  if (isAdded) {
+                    initialQuantity = cart.firstWhere((e) => e.item.id == item.id).quantity;
+                  }
+
+                  if (!context.mounted) return;
+
+                  final result = await showModalBottomSheet(
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    context: context,
+                    builder: (context) => HomeViewItemSheet(
+                      item: item,
+                      initialQuantity: initialQuantity,
                     ),
                   );
-                } else if (!result) {
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: context.colorScheme.errorContainer,
-                      content: Row(
-                        children: [
-                          CustomIcon(icon: CustomIconData.packageRemove, color: context.colorScheme.onErrorContainer),
-                          horizontalSpace(8),
-                          Text(
-                            '${item.title} Removed',
-                            style: context.textTheme.bodyLarge.cColor(context.colorScheme.onErrorContainer),
-                          ),
-                        ],
+
+                  if (result) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: context.colorScheme.primaryContainer,
+                        content: Row(
+                          children: [
+                            CustomIcon(icon: CustomIconData.shoppingBasketConfirm, color: context.colorScheme.onPrimaryContainer),
+                            horizontalSpace(8),
+                            Text(
+                              '${item.title} Added / Updated',
+                              style: context.textTheme.bodyLarge.cColor(context.colorScheme.onPrimaryContainer),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                }
-              },
+                    );
+                  } else if (!result) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: context.colorScheme.errorContainer,
+                        content: Row(
+                          children: [
+                            CustomIcon(icon: CustomIconData.packageRemove, color: context.colorScheme.onErrorContainer),
+                            horizontalSpace(8),
+                            Text(
+                              '${item.title} Removed',
+                              style: context.textTheme.bodyLarge.cColor(context.colorScheme.onErrorContainer),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
             );
           },
         );

@@ -6,6 +6,7 @@ import 'package:shopping_list/core/utils/string_extension.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
+import 'package:shopping_list/features/home/presentation/views/home_receipt_page.dart';
 import 'package:shopping_list/features/home/presentation/views/home_view_cart_sheet.dart';
 
 class ViewCartButton extends StatelessWidget {
@@ -26,12 +27,22 @@ class ViewCartButton extends StatelessWidget {
               child: Stack(
                 children: [
                   InkWell(
-                    onTap: () async => await showModalBottomSheet(
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      context: context,
-                      builder: (context) => const HomeViewCartSheet(),
-                    ),
+                    onTap: () async {
+                      final result = await showModalBottomSheet(
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        context: context,
+                        builder: (context) => const HomeViewCartSheet(),
+                      );
+
+                      if (result == null && !context.mounted) return;
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeReceipt(cart: cart),
+                        ),
+                      );
+                    },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.fastOutSlowIn,

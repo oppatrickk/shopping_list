@@ -331,7 +331,7 @@ class HomeViewCartSheet extends StatelessWidget {
                           ),
                         ),
                         FilledButton(
-                          onPressed: () {},
+                          onPressed: () async => Navigator.pop(context, true),
                           child: Row(
                             children: [
                               CustomIcon(
