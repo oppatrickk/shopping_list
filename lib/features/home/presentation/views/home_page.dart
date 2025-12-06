@@ -9,6 +9,8 @@ import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cat
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_item_bloc/home_shopping_item_bloc.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_search_bar.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_shopping_category_button.dart';
+import 'package:shopping_list/features/home/presentation/widgets/home_shopping_item_list_all.dart';
+import 'package:shopping_list/features/home/presentation/widgets/home_shopping_item_list_categorized.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_sliver_app_bar.dart';
 
 class HomePage extends StatelessWidget {
@@ -26,7 +28,10 @@ class HomePage extends StatelessWidget {
           SafeArea(
             child: NestedScrollView(
               headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) => [
-                HomeSliverAppBar(innerBoxIsScrolled: innerBoxIsScrolled),
+                HomeSliverAppBar(
+                  key: ValueKey(innerBoxIsScrolled),
+                  innerBoxIsScrolled: innerBoxIsScrolled,
+                ),
                 const HomeSearchBar(),
               ],
               body: BlocBuilder<HomeShoppingCategoryCubit, ShoppingCategory?>(
@@ -66,30 +71,31 @@ class HomePage extends StatelessWidget {
                           ),
                           const CustomDivider(),
                           Flexible(
-                            child: BlocBuilder<HomeShoppingItemBloc, HomeShoppingItemState>(
-                              builder: (context, state) {
-                                return state.maybeMap(
-                                  initial: (_) => const SizedBox.shrink(),
-                                  loading: (_) {
-                                    return const Center(child: CircularProgressIndicator());
-                                  },
-                                  loaded: (HomeShoppingItemLoaded state) {
-                                    return category == ShoppingCategory.all
-                                        ? ListView.builder(
-                                            itemCount: state.items.length,
-                                            shrinkWrap: true,
-                                            physics: const NeverScrollableScrollPhysics(),
-                                            itemBuilder: (context, index) => Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                                              child: Text(state.items[index].title),
-                                            ),
-                                          )
-                                        : const SizedBox.shrink();
-                                  },
-                                  error: (_) => const SizedBox.shrink(),
-                                  orElse: () => const SizedBox.shrink(),
-                                );
-                              },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: BlocBuilder<HomeShoppingItemBloc, HomeShoppingItemState>(
+                                builder: (context, state) {
+                                  return state.maybeMap(
+                                    initial: (_) => const SizedBox.shrink(),
+                                    loading: (_) {
+                                      return const Center(child: CircularProgressIndicator());
+                                    },
+                                    loaded: (HomeShoppingItemLoaded state) {
+                                      final filteredItems = category == ShoppingCategory.all
+                                          ? state.items
+                                          : state.items.where((item) => item.categoryEnum == category).toList();
+
+                                      if (category == ShoppingCategory.all) {
+                                        return HomeShoppingItemListAll(items: state.items);
+                                      } else {
+                                        return HomeShoppingItemListCategorized(filteredItems: filteredItems);
+                                      }
+                                    },
+                                    error: (_) => const SizedBox.shrink(),
+                                    orElse: () => const SizedBox.shrink(),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],

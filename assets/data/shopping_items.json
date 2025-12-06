@@ -3,7 +3,7 @@
         "id": 1,
         "title": "Apples",
         "description": "Crisp and naturally sweet apples that are perfect for snacking, juicing, or adding freshness to salads and desserts.",
-        "image": "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce",
+        "image": "assets/images/apples.avif",
         "category": "produce",
         "price": 3.99
     },
@@ -11,7 +11,7 @@
         "id": 2,
         "title": "Bread",
         "description": "A soft and freshly baked loaf with a light texture that works well for sandwiches, breakfast meals, or simple toast.",
-        "image": "https://images.unsplash.com/photo-1608198093002-ad4e005484ec",
+        "image": "assets/images/bread.avif",
         "category": "pantry",
         "price": 2.49
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "title": "Milk",
         "description": "Smooth and creamy whole milk suitable for drinking, cooking, and pairing with cereals or baked goods.",
-        "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+        "image": "assets/images/milk.avif",
         "category": "dairy",
         "price": 4.29
     },
@@ -27,7 +27,7 @@
         "id": 4,
         "title": "Eggs",
         "description": "Fresh and versatile eggs that can be used for everyday meals, baking, or protein-rich breakfast dishes.",
-        "image": "https://images.unsplash.com/photo-1589927986089-35812388d1f4",
+        "image": "assets/images/eggs.avif",
         "category": "dairy",
         "price": 5.99
     },
@@ -35,7 +35,7 @@
         "id": 5,
         "title": "Cheese",
         "description": "A rich cheddar block with a bold flavor and smooth texture ideal for sandwiches, pasta dishes, and savory snacks.",
-        "image": "https://images.unsplash.com/photo-1603048297172-c92544798d5a",
+        "image": "assets/images/cheese.avif",
         "category": "dairy",
         "price": 6.49
     },
@@ -43,7 +43,7 @@
         "id": 6,
         "title": "Chicken",
         "description": "Fresh and tender chicken breast that cooks well for grilling, stir frying, roasting, or healthy meal prep.",
-        "image": "https://images.unsplash.com/photo-1604908177225-df6e4982dcd3",
+        "image": "assets/images/chicken.avif",
         "category": "meat",
         "price": 8.99
     },
@@ -51,7 +51,7 @@
         "id": 7,
         "title": "Rice",
         "description": "Long grain white rice with a light texture that pairs well with a wide range of dishes and everyday meals.",
-        "image": "https://images.unsplash.com/photo-1518977676601-b53f82aba655",
+        "image": "assets/images/rice.avif",
         "category": "pantry",
         "price": 4.79
     },
@@ -59,7 +59,7 @@
         "id": 8,
         "title": "Pasta",
         "description": "Dry spaghetti pasta that cooks to a smooth and firm texture, ideal for classic sauces and hearty meals.",
-        "image": "https://images.unsplash.com/photo-1523473827532-226edb7a46f9",
+        "image": "assets/images/pasta.avif",
         "category": "pantry",
         "price": 3.29
     },
@@ -67,7 +67,7 @@
         "id": 9,
         "title": "Tomatoes",
         "description": "Fresh vine-ripened tomatoes with a bright flavor suitable for salads, sauces, and a variety of home cooked recipes.",
-        "image": "https://images.unsplash.com/photo-1567306226416-5ec3a9e3f3f5",
+        "image": "assets/images/tomatoes.avif",
         "category": "produce",
         "price": 3.49
     },
@@ -75,7 +75,7 @@
         "id": 10,
         "title": "Coffee",
         "description": "Aromatic ground coffee roasted to provide a deep and satisfying flavor for your daily brew or specialty drinks.",
-        "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
+        "image": "assets/images/coffee.avif",
         "category": "pantry",
         "price": 12.99
     }
