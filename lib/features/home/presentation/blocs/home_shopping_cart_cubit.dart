@@ -3,18 +3,18 @@ import 'package:injectable/injectable.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 
 @injectable
-class HomeShoppingCartCubit extends Cubit<List<ShoppingCart?>> {
+class HomeShoppingCartCubit extends Cubit<List<ShoppingCart>> {
   HomeShoppingCartCubit() : super([]);
 
   double get totalPrice => state.fold<double>(
     0,
-    (previousValue, element) => previousValue + ((element?.item.price ?? 0) * (element?.quantity ?? 0)),
+    (previousValue, element) => previousValue + ((element.item.price) * (element.quantity)),
   );
 
   void addItem(ShoppingCart cart) {
     final current = state;
 
-    final index = current.indexWhere((e) => e?.item == cart.item);
+    final index = current.indexWhere((e) => e.item == cart.item);
 
     if (index >= 0) {
       final updated = List<ShoppingCart>.from(current);
