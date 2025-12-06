@@ -1,5 +1,6 @@
 enum CustomIconData {
   chevronDown('assets/icons/chevron-down.svg'),
+  cancel('assets/icons/cancel-01.svg'),
   all('assets/icons/all.svg'),
   produce('assets/icons/produce.svg'),
   meat('assets/icons/meat.svg'),
