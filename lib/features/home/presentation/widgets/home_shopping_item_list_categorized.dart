@@ -45,14 +45,21 @@ class HomeShoppingItemListCategorized extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(4.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: Colors.white,
+                    ),
+                    clipBehavior: Clip.antiAlias,
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: Image.asset(
-                        item.image,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
+                      child: Transform.scale(
+                        scale: 1.05,
+                        child: Image.asset(
+                          item.image,
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.high,
+                        ),
                       ),
                     ),
                   ),

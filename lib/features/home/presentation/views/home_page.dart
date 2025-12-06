@@ -4,9 +4,11 @@ import 'package:shopping_list/core/enums/shopping_category.dart';
 import 'package:shopping_list/core/ui/background.dart';
 import 'package:shopping_list/core/ui/custom_divider.dart';
 import 'package:shopping_list/core/utils/asset_constants.dart';
+import 'package:shopping_list/core/utils/extensions.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_category_cubit.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_item_bloc/home_shopping_item_bloc.dart';
+import 'package:shopping_list/features/home/presentation/widgets/home_loading_shimmer.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_search_bar.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_shopping_category_button.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_shopping_item_list_all.dart';
@@ -78,7 +80,11 @@ class HomePage extends StatelessWidget {
                                   return state.maybeMap(
                                     initial: (_) => const SizedBox.shrink(),
                                     loading: (_) {
-                                      return const Center(child: CircularProgressIndicator());
+                                      if (category == ShoppingCategory.all) {
+                                        return const HomeLoadingShimmerAll();
+                                      } else {
+                                        return const HomeLoadingShimmerCategorized();
+                                      }
                                     },
                                     loaded: (HomeShoppingItemLoaded state) {
                                       final filteredItems = category == ShoppingCategory.all
@@ -91,7 +97,12 @@ class HomePage extends StatelessWidget {
                                         return HomeShoppingItemListCategorized(filteredItems: filteredItems);
                                       }
                                     },
-                                    error: (_) => const SizedBox.shrink(),
+                                    error: (_) => Center(
+                                      child: Text(
+                                        'An error has occured. Please try again later.',
+                                        style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.error),
+                                      ),
+                                    ),
                                     orElse: () => const SizedBox.shrink(),
                                   );
                                 },

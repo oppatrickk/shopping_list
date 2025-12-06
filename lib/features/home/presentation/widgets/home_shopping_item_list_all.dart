@@ -33,8 +33,8 @@ class HomeShoppingItemListAll extends StatelessWidget {
       });
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final itemWidth = screenWidth / 2.5; // adjust the factor as needed
-    final itemHeight = itemWidth / 0.85; // keep same aspect ratio as GridView
+    final itemWidth = screenWidth / 2.5;
+    final itemHeight = itemWidth / 0.85;
 
     return ListView.builder(
       shrinkWrap: true,
