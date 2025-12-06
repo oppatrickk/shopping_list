@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_list/core/enums/shopping_category.dart';
 import 'package:shopping_list/core/ui/custom_icon.dart';
 import 'package:shopping_list/core/utils/extensions.dart';
 import 'package:shopping_list/core/utils/string_extension.dart';
+import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_item.dart';
+import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
 
 class HomeShoppingItemListAll extends StatelessWidget {
   const HomeShoppingItemListAll({
@@ -87,51 +90,54 @@ class HomeShoppingItemListAll extends StatelessWidget {
                         builder: (context, value, child) {
                           return Opacity(opacity: value, child: child);
                         },
-                        child: Container(
-                          width: itemWidth,
-                          height: itemHeight,
-                          decoration: BoxDecoration(
-                            color: context.colorScheme.surfaceContainer,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: AspectRatio(
-                                    aspectRatio: 1,
-                                    child: Image.asset(
-                                      item.image,
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
+                        child: InkWell(
+                          onTap: () => context.read<HomeShoppingCartCubit>().addItem(ShoppingCart(item: item, quantity: 1)),
+                          child: Container(
+                            width: itemWidth,
+                            height: itemHeight,
+                            decoration: BoxDecoration(
+                              color: context.colorScheme.surfaceContainer,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Image.asset(
+                                        item.image,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        item.title,
-                                        style: context.textTheme.labelLarge?.medium,
-                                        overflow: TextOverflow.ellipsis,
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          item.title,
+                                          style: context.textTheme.labelLarge?.medium,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      StringExtension.formatMoney(item.price),
-                                      style: context.textTheme.labelLarge?.medium,
-                                    ),
-                                  ],
+                                      Text(
+                                        StringExtension.formatMoney(item.price),
+                                        style: context.textTheme.labelLarge?.medium,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

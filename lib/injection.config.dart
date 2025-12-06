@@ -19,6 +19,8 @@ import 'features/home/data/repositories/shopping_item_repository_impl.dart'
 import 'features/home/domain/repositories/shopping_item_repository.dart'
     as _i928;
 import 'features/home/domain/usecases/shopping_item_usecase.dart' as _i611;
+import 'features/home/presentation/blocs/home_shopping_cart_cubit.dart'
+    as _i197;
 import 'features/home/presentation/blocs/home_shopping_category_cubit.dart'
     as _i458;
 import 'features/home/presentation/blocs/home_shopping_item_bloc/home_shopping_item_bloc.dart'
@@ -31,6 +33,9 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    gh.factory<_i197.HomeShoppingCartCubit>(
+      () => _i197.HomeShoppingCartCubit(),
+    );
     gh.factory<_i458.HomeShoppingCategoryCubit>(
       () => _i458.HomeShoppingCategoryCubit(),
     );
