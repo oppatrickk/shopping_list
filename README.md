@@ -46,12 +46,27 @@ dart run build_runner build --delete-conflicting-outputs
 
 After running the commands, you can launch the project in VS Code with the Mobile configuration already set up.
 
+**Build APK**
+To build a release APK, run:
+
+```bash
+flutter build apk --release --no-tree-shake-icons --target lib/main.dart -v
+```
+
+This will generate a release-ready APK in the `build/app/outputs/flutter-apk/` directory.
+
 -------
 
 ### Architecture
-The app follows clean architecture with a feature-first folder structure, ensuring a clear separation of concerns.
+The app follows **clean architecture** with a **feature-first folder structure**, ensuring a clear separation of concerns.
 
-It also leverages code generation and dependency injection, following best practices.
+
+- **Feature-First Structure:** Each feature contains its own UI, domain, and data components, keeping related code together.  
+- **Clean Architecture Principles:** Business logic is decoupled from the UI, so the core functionality remains independent of presentation changes.  
+- **Code Generation:** Reduces boilerplate for models, JSON serialization, and other repetitive tasks.  
+- **Dependency Injection:** Promotes modularity, testability, and easier management of dependencies.
+
+This setup ensures the app is **robust, maintainable, and ready for growth**, following industry best practices.
 
 -------
 
@@ -88,15 +103,17 @@ Key design and user experience decisions were made to balance usability, clarity
 
 These trade-offs reflect thoughtful consideration of user experience while adhering as closely as possible to the project requirements.
 
+------
 
 ## Estimated Time Spent
 The project timeline is summarized as follows:
 
 | Phase       | Duration       | Notes                                   |
 |------------|---------------|----------------------------------------|
-| Design     | < 1 day       | Wireframes and UI/UX in Figma          |
-| Development| < 1 day       | Implementation using Flutter with BLoC  |
+| 🎨 Design     | < 1 day       | Wireframes and UI/UX in Figma          |
+| ⚙️ Development| < 1 day       | Implementation using Flutter with BLoC  |
 
+------
 
 ## Screenshots
 
