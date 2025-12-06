@@ -5,8 +5,6 @@ part 'shopping_item_model.g.dart';
 
 @freezed
 class ShoppingItemModel with _$ShoppingItemModel {
-  ShoppingItemModel._();
-
   const factory ShoppingItemModel({
     required int id,
     required String title,

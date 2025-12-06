@@ -6,6 +6,7 @@ import 'package:shopping_list/core/ui/custom_divider.dart';
 import 'package:shopping_list/core/utils/asset_constants.dart';
 import 'package:shopping_list/core/utils/ui_helpers.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_category_cubit.dart';
+import 'package:shopping_list/features/home/presentation/blocs/home_shopping_item_bloc/home_shopping_item_bloc.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_search_bar.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_shopping_category_button.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_sliver_app_bar.dart';
@@ -65,14 +66,30 @@ class HomePage extends StatelessWidget {
                           ),
                           const CustomDivider(),
                           Flexible(
-                            child: ListView(
-                              children: [
-                                Text(category?.title ?? 'All'),
-                                SizedBox(height: MediaQuery.of(context).size.height * 0.5),
-                                const Text('lol'),
-                                SizedBox(height: MediaQuery.of(context).size.height),
-                                const Text('lol'),
-                              ],
+                            child: BlocBuilder<HomeShoppingItemBloc, HomeShoppingItemState>(
+                              builder: (context, state) {
+                                return state.maybeMap(
+                                  initial: (_) => const SizedBox.shrink(),
+                                  loading: (_) {
+                                    return const Center(child: CircularProgressIndicator());
+                                  },
+                                  loaded: (HomeShoppingItemLoaded state) {
+                                    return category == ShoppingCategory.all
+                                        ? ListView.builder(
+                                            itemCount: state.items.length,
+                                            shrinkWrap: true,
+                                            physics: const NeverScrollableScrollPhysics(),
+                                            itemBuilder: (context, index) => Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                              child: Text(state.items[index].title),
+                                            ),
+                                          )
+                                        : const SizedBox.shrink();
+                                  },
+                                  error: (_) => const SizedBox.shrink(),
+                                  orElse: () => const SizedBox.shrink(),
+                                );
+                              },
                             ),
                           ),
                         ],

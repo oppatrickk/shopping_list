@@ -3,7 +3,6 @@ import 'package:shopping_list/features/home/data/datasources/shopping_item_datas
 import 'package:shopping_list/features/home/domain/entities/shopping_item.dart';
 import 'package:shopping_list/features/home/domain/repositories/shopping_item_repository.dart';
 
-/// Repository interface implementation
 @LazySingleton(as: ShoppingItemRepository)
 class ShoppingItemRepositoryImpl implements ShoppingItemRepository {
   const ShoppingItemRepositoryImpl({
@@ -15,7 +14,18 @@ class ShoppingItemRepositoryImpl implements ShoppingItemRepository {
   Future<List<ShoppingItem?>> getAllShoppingItems() async {
     try {
       final items = await localDataSource.getAllShoppingItems();
-      return items.map<ShoppingItem?>((e) => e as ShoppingItem).toList();
+      return items
+          .map<ShoppingItem?>(
+            (e) => ShoppingItem(
+              id: e.id,
+              title: e.title,
+              description: e.description,
+              image: e.image,
+              category: e.category,
+              price: e.price,
+            ),
+          )
+          .toList();
     } catch (e) {
       rethrow;
     }

@@ -15,7 +15,7 @@ class ShoppingItemDataSourceLocalImpl implements ShoppingItemDataSourceLocal {
 
   @override
   Future<List<ShoppingItemModel>> getAllShoppingItems() async {
-    final jsonString = await rootBundle.loadString('assets/shopping_items.json');
+    final jsonString = await rootBundle.loadString('assets/data/shopping_items.json');
     final List<dynamic> jsonList = json.decode(jsonString);
     return jsonList.map((json) => ShoppingItemModel.fromJson(json as Map<String, dynamic>)).toList();
   }

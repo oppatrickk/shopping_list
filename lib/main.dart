@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shopping_list/app/app.dart';
 import 'package:shopping_list/app/bootstrap.dart';
+import 'package:shopping_list/injection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,5 +21,6 @@ void main() async {
   );
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
+  configureDependencies();
   await bootstrap(() => const AppWidget());
 }

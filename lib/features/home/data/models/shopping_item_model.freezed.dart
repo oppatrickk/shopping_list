@@ -182,7 +182,7 @@ class __$$ShoppingItemModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ShoppingItemModelImpl extends _ShoppingItemModel {
+class _$ShoppingItemModelImpl implements _ShoppingItemModel {
   const _$ShoppingItemModelImpl({
     required this.id,
     required this.title,
@@ -190,7 +190,7 @@ class _$ShoppingItemModelImpl extends _ShoppingItemModel {
     required this.image,
     required this.category,
     required this.price,
-  }) : super._();
+  });
 
   factory _$ShoppingItemModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ShoppingItemModelImplFromJson(json);
@@ -250,7 +250,7 @@ class _$ShoppingItemModelImpl extends _ShoppingItemModel {
   }
 }
 
-abstract class _ShoppingItemModel extends ShoppingItemModel {
+abstract class _ShoppingItemModel implements ShoppingItemModel {
   const factory _ShoppingItemModel({
     required final int id,
     required final String title,
@@ -259,7 +259,6 @@ abstract class _ShoppingItemModel extends ShoppingItemModel {
     required final String category,
     required final double price,
   }) = _$ShoppingItemModelImpl;
-  const _ShoppingItemModel._() : super._();
 
   factory _ShoppingItemModel.fromJson(Map<String, dynamic> json) =
       _$ShoppingItemModelImpl.fromJson;

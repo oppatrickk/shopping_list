@@ -18,9 +18,11 @@ import 'features/home/data/repositories/shopping_item_repository_impl.dart'
     as _i394;
 import 'features/home/domain/repositories/shopping_item_repository.dart'
     as _i928;
-import 'features/home/domain/usecases/shoppint_item_usecase.dart' as _i255;
+import 'features/home/domain/usecases/shopping_item_usecase.dart' as _i611;
 import 'features/home/presentation/blocs/home_shopping_category_cubit.dart'
     as _i458;
+import 'features/home/presentation/blocs/home_shopping_item_bloc/home_shopping_item_bloc.dart'
+    as _i814;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -40,8 +42,11 @@ extension GetItInjectableX on _i174.GetIt {
         localDataSource: gh<_i258.ShoppingItemDataSourceLocal>(),
       ),
     );
-    gh.lazySingleton<_i255.GetAllShoppingItems>(
-      () => _i255.GetAllShoppingItems(gh<_i928.ShoppingItemRepository>()),
+    gh.lazySingleton<_i611.GetAllShoppingItems>(
+      () => _i611.GetAllShoppingItems(gh<_i928.ShoppingItemRepository>()),
+    );
+    gh.factory<_i814.HomeShoppingItemBloc>(
+      () => _i814.HomeShoppingItemBloc(gh<_i611.GetAllShoppingItems>()),
     );
     return this;
   }

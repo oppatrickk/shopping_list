@@ -1,23 +1,42 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shopping_list/core/enums/shopping_category.dart';
 
-part 'shopping_item.freezed.dart';
-part 'shopping_item.g.dart';
+class ShoppingItem {
+  ShoppingItem({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.image,
+    required this.category,
+    required this.price,
+  });
 
-@freezed
-class ShoppingItem with _$ShoppingItem {
-  ShoppingItem._();
+  factory ShoppingItem.fromJson(Map<String, dynamic> json) {
+    return ShoppingItem(
+      id: json['id'] as int,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      image: json['image'] as String,
+      category: json['category'] as String,
+      price: (json['price'] as num).toDouble(),
+    );
+  }
+  final int id;
+  final String title;
+  final String description;
+  final String image;
+  final String category;
+  final double price;
 
-  const factory ShoppingItem({
-    required int id,
-    required String title,
-    required String description,
-    required String image,
-    required String category,
-    required double price,
-  }) = _ShoppingItem;
-
-  factory ShoppingItem.fromJson(Map<String, dynamic> json) => _$ShoppingItemFromJson(json);
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'image': image,
+      'category': category,
+      'price': price,
+    };
+  }
 
   ShoppingCategory get categoryEnum {
     switch (category.toLowerCase()) {
