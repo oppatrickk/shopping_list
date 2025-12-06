@@ -108,21 +108,24 @@ class HomeShoppingItemListCategorized extends StatelessWidget {
                             Positioned(
                               top: 0,
                               right: 0,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: context.colorScheme.tertiary,
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(4),
-                                    bottomLeft: Radius.circular(8),
+                              child: InkWell(
+                                onTap: () => context.read<HomeShoppingCartCubit>().removeItem(cart.firstWhere((e) => e.item.id == item.id)),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: context.colorScheme.tertiary,
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(4),
+                                      bottomLeft: Radius.circular(8),
+                                    ),
                                   ),
-                                ),
-                                child: Center(
-                                  child: CustomIcon(
-                                    icon: CustomIconData.cancel,
-                                    size: 24,
-                                    height: 24,
-                                    color: context.colorScheme.onPrimary,
+                                  child: Center(
+                                    child: CustomIcon(
+                                      icon: CustomIconData.cancel,
+                                      size: 24,
+                                      height: 24,
+                                      color: context.colorScheme.onPrimary,
+                                    ),
                                   ),
                                 ),
                               ),

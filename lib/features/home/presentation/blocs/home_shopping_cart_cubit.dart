@@ -10,20 +10,30 @@ class HomeShoppingCartCubit extends Cubit<List<ShoppingCart>> {
     0,
     (previousValue, element) => previousValue + ((element.item.price) * (element.quantity)),
   );
+  int get totalItems => state.fold<int>(0, (previousValue, element) => previousValue + (element.quantity));
 
-  void addItem(ShoppingCart cart) {
+  void addItem(ShoppingCart newItem) {
     final current = state;
+    final index = current.indexWhere((e) => e.item.id == newItem.item.id);
 
-    final index = current.indexWhere((e) => e.item == cart.item);
+    if (index != -1) {
+      final updatedItem = ShoppingCart(
+        item: current[index].item,
+        quantity: current[index].quantity + newItem.quantity,
+      );
 
-    if (index >= 0) {
-      final updated = List<ShoppingCart>.from(current);
-      updated[index] = cart;
-      emit(updated);
+      final newState = List<ShoppingCart>.from(current);
+      newState[index] = updatedItem;
+      emit(newState);
     } else {
-      emit([...current, cart]);
+      emit([...current, newItem]);
     }
   }
+
+  void updateItem(ShoppingCart cart) => emit([
+    for (final cartItem in state)
+      if (cartItem.item.id == cart.item.id) cart else cartItem,
+  ]);
 
   void removeItem(ShoppingCart? item) => emit([
     for (final cartItem in state)
@@ -32,22 +42,3 @@ class HomeShoppingCartCubit extends Cubit<List<ShoppingCart>> {
 
   void clearAllItem() => emit([]);
 }
-
-// void addItem(ShoppingCart newItem) {
-//   final current = state;
-//   final index = current.indexWhere((e) => e.item.id == newItem.item.id);
-
-//   if (index != -1) {
-//     // Update quantity
-//     final updatedItem = ShoppingCart(
-//       item: current[index].item,
-//       quantity: current[index].quantity + newItem.quantity,
-//     );
-
-//     final newState = List<ShoppingCart>.from(current);
-//     newState[index] = updatedItem;
-//     emit(newState); // emit new list to trigger rebuild
-//   } else {
-//     emit([...current, newItem]); // add new item
-//   }
-// }

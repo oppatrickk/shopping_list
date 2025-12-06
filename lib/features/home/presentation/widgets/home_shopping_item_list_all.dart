@@ -9,6 +9,7 @@ import 'package:shopping_list/core/utils/ui_helpers.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_item.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
+import 'package:shopping_list/features/home/presentation/views/home_view_item_sheet.dart';
 
 class HomeShoppingItemListAll extends StatelessWidget {
   const HomeShoppingItemListAll({
@@ -92,13 +93,26 @@ class HomeShoppingItemListAll extends StatelessWidget {
                         builder: (context, value, child) {
                           return Opacity(opacity: value, child: child);
                         },
-                        child: InkWell(
-                          onTap: () => context.read<HomeShoppingCartCubit>().addItem(ShoppingCart(item: item, quantity: 1)),
-                          child: BlocBuilder<HomeShoppingCartCubit, List<ShoppingCart>>(
-                            builder: (context, cart) {
-                              final isAdded = cart.any((e) => e.item.id == item.id && e.quantity > 0);
+                        child: BlocBuilder<HomeShoppingCartCubit, List<ShoppingCart>>(
+                          builder: (context, cart) {
+                            bool isAdded = cart.any((e) => e.item.id == item.id && e.quantity > 0);
+                            int? initialQuantity;
 
-                              return Container(
+                            if (isAdded) {
+                              initialQuantity = cart.firstWhere((e) => e.item.id == item.id).quantity;
+                            }
+
+                            return InkWell(
+                              onTap: () async => await showModalBottomSheet(
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                context: context,
+                                builder: (context) => HomeViewItemSheet(
+                                  item: item,
+                                  initialQuantity: initialQuantity,
+                                ),
+                              ),
+                              child: Container(
                                 key: ValueKey(isAdded),
                                 width: itemWidth,
                                 height: itemHeight,
@@ -159,21 +173,25 @@ class HomeShoppingItemListAll extends StatelessWidget {
                                           Positioned(
                                             top: 0,
                                             right: 0,
-                                            child: Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
-                                              decoration: BoxDecoration(
-                                                color: context.colorScheme.tertiary,
-                                                borderRadius: const BorderRadius.only(
-                                                  topRight: Radius.circular(4),
-                                                  bottomLeft: Radius.circular(8),
+                                            child: InkWell(
+                                              onTap: () =>
+                                                  context.read<HomeShoppingCartCubit>().removeItem(cart.firstWhere((e) => e.item.id == item.id)),
+                                              child: Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4),
+                                                decoration: BoxDecoration(
+                                                  color: context.colorScheme.tertiary,
+                                                  borderRadius: const BorderRadius.only(
+                                                    topRight: Radius.circular(4),
+                                                    bottomLeft: Radius.circular(8),
+                                                  ),
                                                 ),
-                                              ),
-                                              child: Center(
-                                                child: CustomIcon(
-                                                  icon: CustomIconData.cancel,
-                                                  size: 24,
-                                                  height: 24,
-                                                  color: context.colorScheme.onPrimary,
+                                                child: Center(
+                                                  child: CustomIcon(
+                                                    icon: CustomIconData.cancel,
+                                                    size: 24,
+                                                    height: 24,
+                                                    color: context.colorScheme.onPrimary,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -203,9 +221,9 @@ class HomeShoppingItemListAll extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     );

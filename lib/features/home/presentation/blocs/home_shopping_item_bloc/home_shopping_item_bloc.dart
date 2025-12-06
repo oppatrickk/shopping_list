@@ -25,6 +25,8 @@ class HomeShoppingItemBloc extends Bloc<HomeShoppingItemEvent, HomeShoppingItemS
       final fetchedItems = await _getAllShoppingItems();
       items = fetchedItems;
 
+      // * Just to simulate it loading from the server
+      await Future.delayed(const Duration(seconds: 3), () {});
       emit(
         HomeShoppingItemState.loaded(items: items),
       );

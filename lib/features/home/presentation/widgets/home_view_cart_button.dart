@@ -30,7 +30,7 @@ class ViewCartButton extends StatelessWidget {
                       isScrollControlled: true,
                       useSafeArea: true,
                       context: context,
-                      builder: (context) => HomeViewCartSheet(cart: cart),
+                      builder: (context) => const HomeViewCartSheet(),
                     ),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
@@ -109,7 +109,9 @@ class ViewCartButton extends StatelessWidget {
                                           style: context.textTheme.bodyLarge.bold?.copyWith(color: context.colorScheme.onSurfaceVariant),
                                         ),
                                         Text(
-                                          cart.length < 2 ? '${cart.length} item' : '${cart.length} items',
+                                          cart.length < 2
+                                              ? '${context.read<HomeShoppingCartCubit>().totalItems.toString()} item'
+                                              : '${context.read<HomeShoppingCartCubit>().totalItems.toString()} items',
                                           key: ValueKey(cart.length),
                                           style: context.textTheme.labelMedium?.copyWith(color: context.colorScheme.onSurfaceVariant),
                                         ),
@@ -152,7 +154,7 @@ class ViewCartButton extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            '${cart.length}',
+                            context.read<HomeShoppingCartCubit>().totalItems.toString(),
                             style: context.textTheme.bodySmall.bold?.copyWith(color: context.colorScheme.surfaceContainer),
                           ),
                         ),
