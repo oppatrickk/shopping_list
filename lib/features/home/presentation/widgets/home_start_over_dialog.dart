@@ -7,10 +7,7 @@ import 'package:shopping_list/core/utils/ui_helpers.dart';
 class HomeStartOverDialog extends StatelessWidget {
   const HomeStartOverDialog({
     super.key,
-    required this.itemTitle,
   });
-
-  final String itemTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +20,20 @@ class HomeStartOverDialog extends StatelessWidget {
             Row(
               children: [
                 CustomIcon(
-                  icon: CustomIconData.packageRemove,
+                  icon: CustomIconData.shoppingBasketRemove,
                   color: context.colorScheme.error,
                   size: 32,
                 ),
                 horizontalSpace(16),
                 Text(
-                  'Remove Item',
+                  'Start Over',
                   style: context.textTheme.headlineMedium.semibold.cColor(context.colorScheme.error),
                 ),
               ],
             ),
             verticalSpace(16),
             Text(
-              'Are you sure you want to remove $itemTitle from your cart?',
+              'Are you sure you want to start over? This will remove all the items on your cart',
               style: context.textTheme.bodyLarge.cColor(context.colorScheme.onSurface),
             ),
 
@@ -54,7 +51,7 @@ class HomeStartOverDialog extends StatelessWidget {
                 ),
                 Expanded(
                   child: FilledButton(
-                    child: const Text('Remove'),
+                    child: const Text('START OVER'),
                     onPressed: () => Navigator.pop(context, true),
                   ),
                 ),

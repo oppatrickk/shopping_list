@@ -10,6 +10,7 @@ enum CustomIconData {
   pantry('assets/icons/pantry.svg'),
   shoppingBasket('assets/icons/shopping-basket.svg'),
   shoppingBasketConfirm('assets/icons/shopping-basket-confirm.svg'),
+  shoppingBasketRemove('assets/icons/shopping-basket-remove-03.svg'),
   packageDelivered('assets/icons/package-delivered.svg'),
   packageRemove('assets/icons/package-remove.svg'),
   packageSearch('assets/icons/package-search.svg');

@@ -9,6 +9,7 @@ import 'package:shopping_list/core/utils/ui_helpers.dart';
 import 'package:shopping_list/features/home/domain/entities/shopping_cart.dart';
 import 'package:shopping_list/features/home/presentation/blocs/home_shopping_cart_cubit.dart';
 import 'package:shopping_list/features/home/presentation/widgets/home_remove_shopping_item_dialog.dart';
+import 'package:shopping_list/features/home/presentation/widgets/home_start_over_dialog.dart';
 
 class HomeViewCartSheet extends StatelessWidget {
   const HomeViewCartSheet({
@@ -311,7 +312,19 @@ class HomeViewCartSheet extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextButton(
-                          onPressed: () => {},
+                          onPressed: () async {
+                            bool result = await showDialog(
+                              context: context,
+                              builder: (_) => const HomeStartOverDialog(),
+                            );
+
+                            if (!context.mounted) return;
+
+                            if (result) {
+                              context.read<HomeShoppingCartCubit>().clearAllItem();
+                              Navigator.pop(context);
+                            }
+                          },
                           child: Text(
                             'Start Over',
                             style: context.textTheme.bodyMedium.cColor(context.colorScheme.error),
